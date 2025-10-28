@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+@font-face {
+    font-family: 'karbon';
+    font-style: normal;
+    src: url('./assets/fonts/Karbon-Medium.otf'),
+        url('./assets/fonts/Karbon-Light.otf'),
+        url('./assets/fonts/Karbon-Bold.otf');
+}
+
+body {
+    font-family: 'karbon';
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+input {
+    background-color:  #fff;
+}
