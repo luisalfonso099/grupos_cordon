@@ -1,0 +1,758 @@
+[
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, AVRIL",
+    "direccion": "18 de Julio 2312",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, JUAN CARLOS",
+    "direccion": "18  de Julio 2312",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, MAITE",
+    "direccion": "18 de Julio 2312",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, NOA",
+    "direccion": "18 de Julio 2312",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, NOEMI DE",
+    "direccion": "18 de Julio 2312",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ABELLA, VICaptoRIA PIÑEIRO DE",
+    "direccion": "Miguel Martínez 3634",
+    "lat": -34.896097,
+    "lon": -56.136314,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ADRIAN, YULIALCI",
+    "direccion": "18 de Julio 2269",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "AGRIEL, GLADYS",
+    "direccion": "Arenal Grande 1510",
+    "lat": -34.9006319,
+    "lon": -56.1737836,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FERREIRA, MABY AGUILAR",
+    "direccion": "Ricaldoni 2565",
+    "lat": -34.8931965,
+    "lon": -56.1592558,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ALEGRE, ESTELVINA ",
+    "direccion": " Jackson 1324",
+    "lat": -34.9048267,
+    "lon": -56.173344,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "AMARILLA, SANTIAGO",
+    "direccion": "Rodó 2141",
+    "lat": -34.9031877,
+    "lon": -56.1704168,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "AMAYA, JULIO",
+    "direccion": "Rivera 2690 ",
+    "lat": -34.9032395,
+    "lon": -56.1563295,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ANTUNEZ, ABDON",
+    "direccion": "Orestes Araújo 2072",
+    "lat": -34.9028694,
+    "lon": -56.1720057,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BAEZA, JEAN CHRISaptoBAL",
+    "direccion": "Maldonado 1827",
+    "lat": -34.9084622,
+    "lon": -56.1756357,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BAEZA, VALENTINA PEREZ DE",
+    "direccion": "Maldonado 1827",
+    "lat": -34.9084622,
+    "lon": -56.1756357,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BECKER, ERIKA BUSH DE",
+    "direccion": "Piedras 329",
+    "lat": -34.9052709,
+    "lon": -56.2096938,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BECKER, RONALD",
+    "direccion": "Piedras 329",
+    "lat": -34.9052709,
+    "lon": -56.2096938,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BENINCASA, DANIELA",
+    "direccion": "18 de julio 1837 apto  204",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "BICA, NATALIA",
+    "direccion": "Eduardo Acevedo 1565  apto 7",
+    "lat": -34.9007986,
+    "lon": -56.1771235,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CALLEJAS, FAVIO",
+    "direccion": "Echeandia 2788 apto  001",
+    "lat": -34.877995,
+    "lon": -56.1549408,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CALLEJAS, GABRIELA DE",
+    "direccion": "Palmar 2634 apto  304",
+    "lat": -34.9009915,
+    "lon": -56.1622915,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CALLEJAS, SILVANA DE",
+    "direccion": "Echeandia 2788 apto  001",
+    "lat": -34.877995,
+    "lon": -56.1549408,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CALLEJAS, WINGSaptoN",
+    "direccion": "Palmar 2634 apto 304",
+    "lat": -34.9009915,
+    "lon": -56.1622915,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CANEPA, PABLO",
+    "direccion": "Nueva Palmira 2020",
+    "lat": -34.8886279,
+    "lon": -56.1715283,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CANEPA, SILVANA AMARAL DE ",
+    "direccion": "Nueva Palmira 2020",
+    "lat": -34.8886279,
+    "lon": -56.1715283,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CASARAVILLA, JOSE LUIS",
+    "direccion": "Abayubá 2606",
+    "lat": -34.8795763,
+    "lon": -56.1912106,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CERCHIARO, ALICIA SANCHEZ DE",
+    "direccion": "Arenal Grande 1615 apto 1809",
+    "lat": -34.8826041,
+    "lon": -56.177952,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CESPERES, NELBAR LOPEZ DE",
+    "direccion": "Mario Cassinoni 1676 apto 609",
+    "lat": -34.8960358,
+    "lon": -56.1659223,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CHIRIMINI, HORACIO",
+    "direccion": "Maggiolo  566 apto 2",
+    "lat": -34.9181994,
+    "lon": -56.1635448,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CHIRIMINI, ROSANA DE",
+    "direccion": "Maggiolo  566 apto 2",
+    "lat": -34.9181994,
+    "lon": -56.1635448,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "COSOLI, LILIANA DE",
+    "direccion": "Enrique Muñoz 1057",
+    "lat": -34.9117721,
+    "lon": -56.1573034,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "COSOLI, MARIO",
+    "direccion": "Enrique Muñoz 1057",
+    "lat": -34.9117721,
+    "lon": -56.1573034,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "CUSHCAGUA, MICHELLE",
+    "direccion": "Galicia 1840",
+    "lat": -34.8961056,
+    "lon": -56.1778619,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DE LA QUINTANA, ALDA",
+    "direccion": "Canelones 1471",
+    "lat": -34.9080883,
+    "lon": -56.1836964,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DE LA QUINTANA, LUIS",
+    "direccion": "Canelones 1471",
+    "lat": -34.9080883,
+    "lon": -56.1836964,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DE LEON, DINA HERNANDEZ DE",
+    "direccion": "Ramon Anador 2322",
+    "lat": -34.8920851,
+    "lon": -56.1282547,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DE LEON, JEAN CRISaptoPHER",
+    "direccion": "Ramon Anador  2322",
+    "lat": -34.8920851,
+    "lon": -56.1282547,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DELOSANapto, ESTER ",
+    "direccion": "Paulino Pimienta 987 apto 505",
+    "lat": -34.9130478,
+    "lon": -56.1507935,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIAZ, GRACIELA DE",
+    "direccion": "18 de Julio 2161 apto 401",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIAZ, RUBEN",
+    "direccion": "18 de Julio 2161  apto 401",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIGÉNOVA, FERNANDO ",
+    "direccion": "Leandro Gómez 1364",
+    "lat": -34.8312504,
+    "lon": -56.1525078,
+    "grupo": 4
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIGÉNOVA, MARÍA DE",
+    "direccion": "Leandro Gómez 1364",
+    "lat": -34.8312504,
+    "lon": -56.1525078,
+    "grupo": 4
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIOGO KATHERINE DE,",
+    "direccion": "Barrios Amorin 1575  apto 2",
+    "lat": -34.8979588,
+    "lon": -56.1874895,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIOGO, ISAIAS",
+    "direccion": "Barrios Amorin 1575 apto  2",
+    "lat": -34.8979588,
+    "lon": -56.1874895,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "DIOGO, MELINA",
+    "direccion": "Rodo 1783",
+    "lat": -34.9047622,
+    "lon": -56.1778652,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FERREIRA, RUBEN",
+    "direccion": "Ricaldoni 2565 apto 302",
+    "lat": -34.8931965,
+    "lon": -56.1592558,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FONTANA, ALEJANDRA",
+    "direccion": "8 de Octubre 2292 apto 1201",
+    "lat": -34.8970944,
+    "lon": -56.1654997,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FONTANA, DIEGO",
+    "direccion": "8 de Octubre 2292 apto 1201",
+    "lat": -34.8970944,
+    "lon": -56.1654997,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FONTANA, SANTIAGO",
+    "direccion": "Gaboto 1214",
+    "lat": -34.9073961,
+    "lon": -56.1773204,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "FUENTES, ALBA",
+    "direccion": "Maldonado ",
+    "lat": -34.90957,
+    "lon": -56.1898596,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GIARDINA, MARIA CARMEN",
+    "direccion": "Sarmiento 2414 apto 802",
+    "lat": -34.9147642,
+    "lon": -56.1609879,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GODOY, CAROLINA",
+    "direccion": "Rio Negro 1555 apto 703",
+    "lat": -34.902175,
+    "lon": -56.1941359,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GODOY, MARCOS",
+    "direccion": "Rio Negro 1555 apto  703",
+    "lat": -34.902175,
+    "lon": -56.1941359,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GONZALEZ, CRISTHIAN",
+    "direccion": "18 de Julio 1443",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GONZÁLEZ, FRANKLIN",
+    "direccion": "Goes 2333  apto 705",
+    "lat": -34.8927546,
+    "lon": -56.1657918,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "GONZÁLEZ, ROMINA DE",
+    "direccion": "Goes 2333 apto 705",
+    "lat": -34.8927546,
+    "lon": -56.1657918,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "HERRERA, ANA",
+    "direccion": "Libertad 2864  apto 101",
+    "lat": -34.9076641,
+    "lon": -56.152029,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "IZQUIERDO, MIRTA",
+    "direccion": "Colonia 966 apto 501",
+    "lat": -34.905318,
+    "lon": -56.1955665,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "LAGUADO, LUIS",
+    "direccion": "Salterain 1434 apto 102",
+    "lat": -34.902622,
+    "lon": -56.1701051,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "LAGUADO, NICOLE DE",
+    "direccion": "Salterain 1434 apto 102",
+    "lat": -34.902622,
+    "lon": -56.1701051,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "LEFCO, CAMILA",
+    "direccion": "Presidente Berro 2481 apto 002",
+    "lat": -34.8904838,
+    "lon": -56.1647081,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "MEDINA, ANaptoNIO",
+    "direccion": "A Monterroso 2023 apto  302",
+    "lat": -34.825331,
+    "lon": -56.2047343,
+    "grupo": 3
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "MEDINA, JACINTA GÓMEZ de",
+    "direccion": "A Monterroso 2023 apto  302",
+    "lat": -34.825331,
+    "lon": -56.2047343,
+    "grupo": 3
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "MENDEZ, TERESA",
+    "direccion": "Canelones 2171",
+    "lat": -34.9069815,
+    "lon": -56.168078,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "NOGUIRA, ROBERapto",
+    "direccion": "Echeverria 600 apto 002",
+    "lat": -34.9157028,
+    "lon": -56.160455,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ORDOÑEZ, ENCARNACION",
+    "direccion": "18 de julio 2338",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ORTIZ, CLAUDIA",
+    "direccion": "18 de Julio 2321",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PARILLI, CIRENIA",
+    "direccion": "Convencion 1465 apto 503",
+    "lat": -34.9041079,
+    "lon": -56.1973357,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PERETTI, OLGA",
+    "direccion": "Colonia 2212 apto 703",
+    "lat": -34.897657,
+    "lon": -56.1679887,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PEREZ, ALEJANDRO",
+    "direccion": "Acevedo Diaz 1240",
+    "lat": -34.9051017,
+    "lon": -56.1661418,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PEREZ, BEATRIZ de",
+    "direccion": "Acevedo Diaz 1240",
+    "lat": -34.9051017,
+    "lon": -56.1661418,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PICUN, ANA MARIA",
+    "direccion": " Rodó 2267",
+    "lat": -34.9029689,
+    "lon": -56.1674316,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PICUN, RICARDO",
+    "direccion": " Rodó 2267",
+    "lat": -34.9029689,
+    "lon": -56.1674316,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "PROENZA, NESaptoR",
+    "direccion": "Nueva Palmira 2002",
+    "lat": -34.8886485,
+    "lon": -56.1719015,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "REYES, MYRIAM VILLA DE",
+    "direccion": "18 de julio 878 apto 201",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ROSA, SILVIA",
+    "direccion": "Jackson 1324  apto 502",
+    "lat": -34.9048267,
+    "lon": -56.173344,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ROURA GLORIA",
+    "direccion": "Juan Manuel Blanes 982",
+    "lat": -34.9112068,
+    "lon": -56.1714849,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ROURA SOFIA",
+    "direccion": "Juan Manuel Blanes 982",
+    "lat": -34.9112068,
+    "lon": -56.1714849,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "SUAREZ, CARMEN",
+    "direccion": "Solano Garcia 2467  apto 7",
+    "lat": -34.9223183,
+    "lon": -56.1599866,
+    "grupo": 5
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "TASSARA, ELEONORA",
+    "direccion": "Requena 1539",
+    "lat": -34.8883801,
+    "lon": -56.1721071,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "TEJEIRA, BEATRIZ",
+    "direccion": "18 de Julio 1787 apto  101",
+    "lat": -31.7154423,
+    "lon": -55.9827688,
+    "grupo": 0
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "VARGAS, JUANA",
+    "direccion": "Nueva Palmira 2022",
+    "lat": -34.8886052,
+    "lon": -56.1724405,
+    "grupo": 2
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "VIANA, LUCIA",
+    "direccion": "Jujuy 2904 ",
+    "lat": -34.8814187,
+    "lon": -56.1965373,
+    "grupo": 1
+  },
+  { 
+    "privilegios": "",
+    "condicion":"",
+    "nombre": "ZUNIN, GUSTAVO",
+    "direccion": "Paraguay 1091",
+    "lat": -34.9108766,
+    "lon": -56.192086,
+    "grupo": 1
+  }
+]

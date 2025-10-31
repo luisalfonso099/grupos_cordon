@@ -1,10 +1,13 @@
+import MapaComponent from "../components/MapaComponent"
 
 const MapPage = () => {
     return (
         <>
-            hola
+            <MapaComponent />
         </>
     )
 }
 
 export default MapPage
+
+

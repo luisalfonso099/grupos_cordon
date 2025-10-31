@@ -4,9 +4,13 @@ import {
   getFirestore,
   collection,
   getDocs,
-  addDoc,
+  writeBatch,
   updateDoc,
+  query, where,
   doc,
+  deleteDoc,
+  addDoc,
+  setDoc,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -24,7 +28,6 @@ const app = initializeApp(firebaseConfig);
 
 // 🔥 Inicializar Firestore
 export const db = getFirestore(app);
-
 // 🧩 Tipos
 export interface Persona {
   id?: string;
@@ -33,6 +36,8 @@ export interface Persona {
   lat?: number;
   lon?: number;
   grupo?: number;
+  condicion: string;
+  privilegios: string[];
 }
 
 // 📥 Obtener todas las personas
@@ -44,18 +49,59 @@ export const fetchPersonas = async (): Promise<Persona[]> => {
   })) as Persona[];
 };
 
-// ➕ Agregar una nueva persona
-export const addPersona = async (persona: Persona): Promise<void> => {
-  await addDoc(collection(db, "personas"), persona);
+
+export const updatePersona = async (data: Partial<Persona>): Promise<void> => {
+  // 1️⃣ Crear query para buscar el documento
+  const q = query(collection(db, "personas"), where("id", "==", data.id));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    throw new Error("No se encontró la persona con ese id");
+  }
+
+  // 2️⃣ Tomar el primer documento (asumiendo que id es único)
+  const docRef = doc(db, "personas", querySnapshot.docs[0].id);
+
+  // 3️⃣ Actualizar
+  await updateDoc(docRef, data);
 };
 
-// 🔄 Actualizar persona existente
-export const updatePersona = async (
-  id: string,
-  data: Partial<Persona>
-): Promise<void> => {
+export const saveAllPersonas = async (personas: Persona[]) => {
+  const batch = writeBatch(db);
+
+  // // 1️⃣ Obtener la colección actual y borrarla
+  const snapshot = await getDocs(collection(db, "personas"));
+  snapshot.forEach((docSnap) => batch.delete(docSnap.ref));
+
+  // 2️⃣ Agregar todas las nuevas
+  personas.forEach((p) => {
+    const ref = doc(collection(db, "personas")); // genera ID
+    p.id = ref.id; // 
+    batch.set(ref, p);
+  });
+
+  // 3️⃣ Ejecutar
+  await batch.commit();
+};
+
+export const deletePersona = async (id: string) => {
   const ref = doc(db, "personas", id);
-  await updateDoc(ref, data);
+  await deleteDoc(ref);
+};
+
+export const createPersona = async (persona: any) => {
+  const personasCollection = collection(db, "personas");
+
+  // Creamos un ID nuevo manualmente
+  const newId = crypto.randomUUID(); // 🔹 genera un UUID único
+
+  // Le asignamos el id también al objeto persona
+  const personaConId = { ...persona, id: newId };
+
+  // Creamos el documento con ese ID
+  await setDoc(doc(personasCollection, newId), personaConId);
+
+  return newId;
 };
 
 export { app };

@@ -10,22 +10,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "@tailwindcss/vite": "^4.1.16",
     "firebase": "^12.4.0",
+    "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.9.4",
+    "react-tabulator": "^0.21.0",
     "sweetalert2": "^11.26.3",
-    "tailwindcss": "^4.1.16",
-    "tui-grid": "^4.21.22"
+    "tabulator-tables": "^6.3.1",
+    "tailwindcss": "^4.1.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/leaflet": "^1.9.21",
+    "@types/leaflet-draw": "^1.0.13",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
+    "@types/tabulator-tables": "^6.3.0",
     "@vitejs/plugin-react": "^5.0.4",
-    "daisyui": "^5.3.10",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",

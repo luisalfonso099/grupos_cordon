@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@plugin "daisyui";
 
 
 @font-face {
@@ -13,9 +12,4 @@
 body {
     font-family: 'karbon';
     min-height: 100vh;
-    background-color: #fff;
-}
-
-input {
-    background-color:  #fff;
 }
