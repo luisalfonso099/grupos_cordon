@@ -4,18 +4,30 @@ interface FiltrosPanelProps {
   coloresPorGrupo: string[];
   filtrosPriv: string[];
   filtrosGrupos: number[];
+  mostrarPersonas: boolean;
+  mostrarTerritorios: boolean;
+  mostrarPoligonos: boolean; // 👈 nuevo
   onPrivChange: (priv: string) => void;
   onGrupoChange: (num: number) => void;
   onClear: () => void;
+  onToggleMostrar: () => void;
+  onToggleTerritorios: () => void;
+  onTogglePoligonos: () => void; // 👈 nuevo callback
 }
 
 export const FiltrosPanel: React.FC<FiltrosPanelProps> = ({
   coloresPorGrupo,
   filtrosPriv,
   filtrosGrupos,
+  mostrarPersonas,
+  mostrarTerritorios,
+  mostrarPoligonos,
   onPrivChange,
   onGrupoChange,
   onClear,
+  onToggleMostrar,
+  onToggleTerritorios,
+  onTogglePoligonos,
 }) => {
   const privilegios = [
     { label: "Anciano 👨🏼‍🦳", value: "anciano" },
@@ -42,7 +54,61 @@ export const FiltrosPanel: React.FC<FiltrosPanelProps> = ({
     >
       <div style={{ fontWeight: 600, marginBottom: 6 }}>Filtros</div>
 
+      {/* 👁 Mostrar/Ocultar personas */}
+      <label
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          marginBottom: 8,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={mostrarPersonas}
+          onChange={onToggleMostrar}
+        />
+        Mostrar personas
+      </label>
+
+      {/* 🗺 Mostrar/Ocultar territorios */}
+      <label
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          marginBottom: 8,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={mostrarTerritorios}
+          onChange={onToggleTerritorios}
+        />
+        Mostrar territorios
+      </label>
+
+      {/* 🧩 Mostrar/Ocultar grupos (polígonos) */}
+      <label
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          marginBottom: 8,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={mostrarPoligonos}
+          onChange={onTogglePoligonos}
+        />
+        Mostrar grupos
+      </label>
+
+      <hr style={{ margin: "10px 0" }} />
+
       {/* 🔸 Privilegios */}
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>Privilegios</div>
       {privilegios.map((opt) => (
         <label
           key={opt.value}
@@ -65,9 +131,7 @@ export const FiltrosPanel: React.FC<FiltrosPanelProps> = ({
       <hr style={{ margin: "10px 0" }} />
 
       {/* 🔹 Grupos */}
-      <div style={{ fontWeight: 600, marginBottom: 6 }}>
-        Filtrar por grupo
-      </div>
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>Grupos</div>
 
       {coloresPorGrupo.map((color, i) => {
         const grupoNum = i + 1;

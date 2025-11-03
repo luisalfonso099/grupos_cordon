@@ -9,297 +9,338 @@ import { db } from "../utils/firebase";
 import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
 
 const coloresPorGrupo = [
-    "#E63946", // grupo 1 - rojo intenso
-    "#457B9D", // grupo 2 - azul fuerte
-    "#F1FA3C", // grupo 3 - amarillo brillante
-    "#2A9D8F", // grupo 4 - verde azulado
-    "#FF9F1C", // grupo 5 - naranja vivo
-    "#6A4C93", // grupo 6 - morado profundo
+  "#E63946",
+  "#457B9D",
+  "#F1FA3C",
+  "#2A9D8F",
+  "#FF9F1C",
+  "#6A4C93",
 ];
 
-
 type DibujableLayer = L.Path & {
-    options: L.PathOptions & { grupo?: number };
-    toGeoJSON: () => GeoJSON.GeometryObject;
+  options: L.PathOptions & { grupo?: number };
+  toGeoJSON: () => GeoJSON.GeometryObject;
 };
 
-export const DrawControl = () => {
-    const map = useMap();
-    const drawnItemsRef = useRef<L.FeatureGroup>(new L.FeatureGroup());
-    const grupoALayerRef = useRef<Map<number, L.Layer>>(new Map());
-    let modoBorradoActivo = false;
+export const DrawControl = ({ mostrarPoligonos = true }: { mostrarPoligonos?: boolean }) => {
+  const map = useMap();
+  const drawnItemsRef = useRef<L.FeatureGroup>(new L.FeatureGroup());
+  const grupoALayerRef = useRef<Map<number, L.Layer>>(new Map());
+  const modoBorradoActivoRef = useRef<boolean>(false);
 
-    useEffect(() => {
+  useEffect(() => {
+    const drawnItems = drawnItemsRef.current;
+    const grupoALayer = grupoALayerRef.current;
 
-        const drawnItems = drawnItemsRef.current;
-        const grupoALayer = grupoALayerRef.current;
-        map.addLayer(drawnItems);
+    // Añadir el FeatureGroup al mapa (si no está)
+    if (!map.hasLayer(drawnItems)) {
+      drawnItems.addTo(map);
+    }
 
-        const drawControl = new L.Control.Draw({
-            edit: { featureGroup: drawnItems },
-            draw: {
-                rectangle: false,
-                circle: false,
-                marker: false,
-                polyline: false,
+    // Crear control draw
+    const drawControl = new L.Control.Draw({
+      edit: { featureGroup: drawnItems },
+      draw: {
+        rectangle: false,
+        circle: false,
+        marker: false,
+        polyline: false,
+      },
+    });
+
+    map.addControl(drawControl);
+
+    // --- Función auxiliar para click de cambio de grupo ---
+    const agregarEventoCambioGrupo = (layer: DibujableLayer) => {
+      layer.off("click");
+      layer.on("click", async () => {
+        if (modoBorradoActivoRef.current) return;
+
+        const grupoAnterior = layer.options.grupo;
+        const opciones: Record<number, string> = {};
+        for (let i = 1; i <= 6; i++) opciones[i] = `Grupo ${i}`;
+
+        const { value: nuevoGrupo } = await Swal.fire({
+          title: "Cambiar grupo",
+          input: "select",
+          inputOptions: opciones,
+          inputValue: grupoAnterior,
+          showCancelButton: true,
+          confirmButtonText: "Cambiar",
+          cancelButtonText: "Cancelar",
+        });
+
+        const num = Number(nuevoGrupo);
+        if (!nuevoGrupo || isNaN(num)) return;
+
+        if (num >= 1 && num <= 6 && num !== grupoAnterior) {
+          const color = coloresPorGrupo[num - 1];
+
+          if (grupoALayer.has(num)) {
+            const viejo = grupoALayer.get(num)!;
+            drawnItems.removeLayer(viejo);
+            grupoALayer.delete(num);
+            await deleteDoc(doc(db, "poligonos", `grupo${num}`));
+          }
+
+          layer.setStyle({ color, fillColor: color, fillOpacity: 0.5 });
+          layer.options.grupo = num;
+          grupoALayer.set(num, layer);
+
+          if (grupoAnterior) {
+            await deleteDoc(doc(db, "poligonos", `grupo${grupoAnterior}`));
+          }
+          await setDoc(doc(db, "poligonos", `grupo${num}`), {
+            grupo: num,
+            geojson: JSON.stringify(layer.toGeoJSON()),
+          });
+
+          // Actualizar tooltip
+          const tt = layer.getTooltip?.();
+          if (tt) {
+            tt.setContent(`Grupo ${num}`);
+          } else {
+            layer.bindTooltip(`Grupo ${num}`, {
+              permanent: false,
+              direction: "center",
+              className: "w-2",
+            });
+          }
+
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: `Grupo cambiado a ${num}`,
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        }
+      });
+    };
+
+    // --- Cargar polígonos desde Firestore ---
+    const cargarPoligonos = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "poligonos"));
+
+        drawnItems.clearLayers();
+        grupoALayer.clear();
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (!data?.geojson) return;
+
+          let geojson;
+          try {
+            geojson = JSON.parse(data.geojson);
+          } catch (err) {
+            console.warn("GeoJSON inválido en documento:", docSnap.id, err);
+            return;
+          }
+
+          const capa = L.geoJSON(geojson, {
+            style: {
+              color: coloresPorGrupo[(data.grupo ?? 1) - 1] ?? "#333",
+              fillColor: coloresPorGrupo[(data.grupo ?? 1) - 1] ?? "#333",
+              fillOpacity: 0.5,
             },
+          }).getLayers()[0] as DibujableLayer | undefined;
+
+          if (!capa) return;
+
+          capa.options.grupo = data.grupo;
+
+          // Tooltip con el nombre del grupo
+          capa.bindTooltip(`Grupo ${data.grupo}`, {
+            permanent: true,
+            direction: "center",
+            className: "group-tooltip",
+          });
+
+          drawnItems.addLayer(capa);
+          grupoALayer.set(data.grupo, capa);
+          agregarEventoCambioGrupo(capa);
         });
-        map.addControl(drawControl);
+      } catch (err) {
+        console.error("Error cargando poligonos:", err);
+      }
+    };
 
-        const cargarPoligonos = async () => {
-            const snapshot = await getDocs(collection(db, "poligonos"));
+    // --- Eventos de Leaflet Draw ---
+    const onDeleteStart = () => (modoBorradoActivoRef.current = true);
+    const onDeleteStop = () => (modoBorradoActivoRef.current = false);
 
-            // Evita cargar duplicados si ya hay capas
-            if (drawnItems.getLayers().length > 0) return;
+    const onCreated = async (e: L.LeafletEvent & { layer?: L.Layer }) => {
+      try {
+        const layer = (e as any).layer as DibujableLayer | undefined;
+        if (!layer) return;
 
-            drawnItems.clearLayers();
-            grupoALayer.clear();
+        const layers = drawnItems.getLayers() as DibujableLayer[];
+        if (layers.length >= 6) {
+          await Swal.fire({
+            icon: "warning",
+            title: "Límite alcanzado",
+            text: "Solo puedes tener hasta 6 grupos en el mapa.",
+          });
+          return;
+        }
 
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                if (!data.geojson) return;
+        const gruposOcupados = layers.map((l) => l.options.grupo);
+        const gruposDisponibles: Record<number, string> = {};
+        for (let i = 1; i <= 6; i++) {
+          if (!gruposOcupados.includes(i)) gruposDisponibles[i] = `Grupo ${i}`;
+        }
 
-                const geojson = JSON.parse(data.geojson);
-
-                // ✅ Tipamos correctamente el resultado
-                const capa = L.geoJSON(geojson, {
-                    style: {
-                        color: coloresPorGrupo[data.grupo - 1],
-                        fillColor: coloresPorGrupo[data.grupo - 1],
-                        fillOpacity: 0.5,
-                    },
-                }).getLayers()[0] as DibujableLayer;
-
-                capa.options.grupo = data.grupo;
-                drawnItems.addLayer(capa);
-                grupoALayer.set(data.grupo, capa);
-                agregarEventoCambioGrupo(capa);
-            });
-        };
-
-
-
-
-        // Detectar inicio de modo borrar
-        map.on(L.Draw.Event.DELETESTART, () => {
-            console.log('holaa');
-
-            modoBorradoActivo = true;
-        });
-
-        // Detectar salida del modo borrar
-        map.on(L.Draw.Event.DELETESTOP, () => {
-            modoBorradoActivo = false;
-        });
-
-
-        // 🧩 Crear polígono
-        map.on(L.Draw.Event.CREATED, async (e) => {
-            const event = e as L.LeafletEvent & { layer: DibujableLayer };
-            const layer = event.layer;
-            const layers = drawnItems.getLayers() as DibujableLayer[];
-            const grupoALayer = grupoALayerRef.current;
-
-            if (layers.length >= 6) {
-                await Swal.fire({
-                    icon: "warning",
-                    title: "Límite alcanzado",
-                    text: "Solo puedes tener hasta 6 grupos en el mapa.",
-                });
-                return;
-            }
-
-            // ✅ Tipado correcto: ya no usamos "any"
-            const gruposOcupados = layers.map((l) => l.options.grupo);
-
-            const gruposDisponibles: Record<number, string> = {};
-            for (let i = 1; i <= 6; i++) {
-                if (!gruposOcupados.includes(i)) gruposDisponibles[i] = `Grupo ${i}`;
-            }
-
-            const { value: grupoElegido } = await Swal.fire({
-                title: "Elegir grupo para el nuevo polígono",
-                input: "select",
-                inputOptions: gruposDisponibles,
-                inputPlaceholder: "Selecciona un grupo",
-                showCancelButton: true,
-                confirmButtonText: "Asignar",
-                cancelButtonText: "Cancelar",
-            });
-
-            if (!grupoElegido) return;
-
-            const num = Number(grupoElegido);
-            const color = coloresPorGrupo[num - 1];
-
-            // Si el grupo ya existe, borrar viejo
-            if (grupoALayer.has(num)) {
-                const viejo = grupoALayer.get(num)!;
-                drawnItems.removeLayer(viejo);
-                grupoALayer.delete(num);
-                await deleteDoc(doc(db, "poligonos", `grupo${num}`));
-            }
-
-            layer.setStyle({ color, fillColor: color, fillOpacity: 0.5 });
-            layer.options.grupo = num;
-            drawnItems.addLayer(layer);
-            grupoALayer.set(num, layer);
-            agregarEventoCambioGrupo(layer);
-
-            await setDoc(doc(db, "poligonos", `grupo${num}`), {
-                grupo: num,
-                geojson: JSON.stringify(layer.toGeoJSON()),
-            });
-
-            await Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "success",
-                title: `Polígono agregado al grupo ${num}`,
-                timer: 1500,
-                showConfirmButton: false,
-                timerProgressBar: true,
-            });
+        const { value: grupoElegido } = await Swal.fire({
+          title: "Elegir grupo para el nuevo polígono",
+          input: "select",
+          inputOptions: gruposDisponibles,
+          inputPlaceholder: "Selecciona un grupo",
+          showCancelButton: true,
+          confirmButtonText: "Asignar",
+          cancelButtonText: "Cancelar",
         });
 
+        if (!grupoElegido) return;
 
+        const num = Number(grupoElegido);
+        if (isNaN(num)) return;
+        const color = coloresPorGrupo[num - 1];
 
+        if (grupoALayer.has(num)) {
+          const viejo = grupoALayer.get(num)!;
+          drawnItems.removeLayer(viejo);
+          grupoALayer.delete(num);
+          await deleteDoc(doc(db, "poligonos", `grupo${num}`));
+        }
 
-        // ✏️ Editar
-        map.on(L.Draw.Event.EDITED, async () => {
-            const layers = drawnItems.getLayers() as Array<
-                L.Path & {
-                    options: L.PathOptions & { grupo?: number };
-                    toGeoJSON: () => GeoJSON.GeometryObject;
-                }
-            >;
+        layer.setStyle({ color, fillColor: color, fillOpacity: 0.5 });
+        layer.options.grupo = num;
+        drawnItems.addLayer(layer);
+        grupoALayer.set(num, layer);
+        agregarEventoCambioGrupo(layer);
 
-            for (const layer of layers) {
-                const grupo = layer.options.grupo;
-                if (!grupo) continue;
-
-                const geojson = layer.toGeoJSON();
-                await setDoc(doc(db, "poligonos", `grupo${grupo}`), {
-                    grupo,
-                    geojson: JSON.stringify(geojson),
-                });
-            }
-
-            await Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "success",
-                title: "Cambios guardados",
-                timer: 1000,
-                showConfirmButton: false,
-            });
+        // Tooltip
+        layer.bindTooltip(`Grupo ${num}`, {
+          permanent: true,
+          direction: "center",
+          className: "group-tooltip",
         });
 
-
-
-        // 🗑️ Eliminar
-        map.on(L.Draw.Event.DELETED, async (e) => {
-            // Verificamos en tiempo de ejecución que e tenga "layers"
-            if (!("layers" in e)) return;
-
-            const layers = (e.layers as L.LayerGroup).getLayers() as L.Layer[];
-            const grupoALayer = grupoALayerRef.current;
-
-            for (const layer of layers) {
-                const vectorLayer = layer as L.Path & { options: L.PathOptions & { grupo?: number } };
-                const grupo = vectorLayer.options.grupo;
-
-                if (grupo) {
-                    drawnItems.removeLayer(vectorLayer);
-                    grupoALayer.delete(grupo);
-                    await deleteDoc(doc(db, "poligonos", `grupo${grupo}`));
-                    Swal.fire({
-                        toast: true,
-                        position: "top-end",
-                        icon: "success",
-                        title: `Polígono del grupo ${grupo} eliminado`,
-                        timer: 1500,
-                        showConfirmButton: false,
-                    });
-                }
-            }
+        await setDoc(doc(db, "poligonos", `grupo${num}`), {
+          grupo: num,
+          geojson: JSON.stringify(layer.toGeoJSON()),
         });
 
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: `Polígono agregado al grupo ${num}`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error en created handler:", err);
+      }
+    };
 
+    const onEdited = async () => {
+      try {
+        const layers = drawnItems.getLayers() as DibujableLayer[];
+        for (const layer of layers) {
+          const grupo = layer.options.grupo;
+          if (!grupo) continue;
+          const geojson = layer.toGeoJSON();
 
-        // 🔁 Cambio de grupo
+          await setDoc(doc(db, "poligonos", `grupo${grupo}`), {
+            grupo,
+            geojson: JSON.stringify(geojson),
+          });
 
-        const agregarEventoCambioGrupo = (layer: L.Path & { options: L.PathOptions & { grupo?: number }; toGeoJSON: () => GeoJSON.Feature; }) => {
-            layer.on("click", async () => {
-
-                console.log('modoBorradoActivo', modoBorradoActivo);
-
-
-                if (modoBorradoActivo) return;
-
-                const grupoAnterior = layer.options.grupo;
-                const grupoALayer = grupoALayerRef.current;
-
-                const opciones: Record<number, string> = {};
-                for (let i = 1; i <= 6; i++) {
-                    opciones[i] = `Grupo ${i}`;
-                }
-
-                const { value: nuevoGrupo } = await Swal.fire({
-                    title: "Cambiar grupo",
-                    input: "select",
-                    inputOptions: opciones,
-                    inputValue: grupoAnterior,
-                    showCancelButton: true,
-                    confirmButtonText: "Cambiar",
-                    cancelButtonText: "Cancelar",
-                });
-
-                const num = Number(nuevoGrupo);
-                if (num >= 1 && num <= 6 && num !== grupoAnterior) {
-                    const color = coloresPorGrupo[num - 1];
-
-                    if (grupoALayer.has(num)) {
-                        const viejo = grupoALayer.get(num)!;
-                        drawnItems.removeLayer(viejo);
-                        grupoALayer.delete(num);
-                        await deleteDoc(doc(db, "poligonos", `grupo${num}`));
-                    }
-
-                    layer.setStyle({ color, fillColor: color, fillOpacity: 0.5 });
-                    layer.options.grupo = num;
-                    grupoALayer.set(num, layer);
-
-                    await deleteDoc(doc(db, "poligonos", `grupo${grupoAnterior}`));
-                    await setDoc(doc(db, "poligonos", `grupo${num}`), {
-                        grupo: num,
-                        geojson: JSON.stringify(layer.toGeoJSON()),
-                    });
-
-                    Swal.fire({
-                        toast: true,
-                        position: "top-end",
-                        icon: "success",
-                        title: `Grupo cambiado a ${num}`,
-                        timer: 1500,
-                        showConfirmButton: false,
-                    });
-                }
+          const tt = layer.getTooltip?.();
+          if (tt) tt.setContent(`Grupo ${grupo}`);
+          else
+            layer.bindTooltip(`Grupo ${grupo}`, {
+              permanent: true,
+              direction: "center",
+              className: "group-tooltip",
             });
-        };
+        }
 
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Cambios guardados",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error en edited handler:", err);
+      }
+    };
 
-        // 🚀 Cargar al inicio
-        cargarPoligonos();
+    const onDeleted = async (e: L.LeafletEvent & { layers?: L.LayerGroup }) => {
+      try {
+        if (!e.layers) return;
+        const layers = e.layers.getLayers() as DibujableLayer[];
+        for (const layer of layers) {
+          const grupo = layer.options.grupo;
+          if (grupo) {
+            drawnItems.removeLayer(layer);
+            grupoALayer.delete(grupo);
+            await deleteDoc(doc(db, "poligonos", `grupo${grupo}`));
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: "success",
+              title: `Polígono del grupo ${grupo} eliminado`,
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Error en deleted handler:", err);
+      }
+    };
 
-        return () => {
-            map.removeControl(drawControl);
-            map.off(); // limpia listeners duplicados
-        };
-    }, [map]);
+    // --- Registrar listeners ---
+    map.on(L.Draw.Event.DELETESTART, onDeleteStart);
+    map.on(L.Draw.Event.DELETESTOP, onDeleteStop);
+    map.on(L.Draw.Event.CREATED, onCreated);
+    map.on(L.Draw.Event.EDITED, onEdited);
+    map.on(L.Draw.Event.DELETED, onDeleted);
 
-    return (
-        <>
-        </>
-    );
+    // --- Cargar al inicio ---
+    cargarPoligonos();
+
+    // --- Cleanup ---
+    return () => {
+      map.off(L.Draw.Event.DELETESTART, onDeleteStart);
+      map.off(L.Draw.Event.DELETESTOP, onDeleteStop);
+      map.off(L.Draw.Event.CREATED, onCreated);
+      map.off(L.Draw.Event.EDITED, onEdited);
+      map.off(L.Draw.Event.DELETED, onDeleted);
+      map.removeControl(drawControl);
+      if (map.hasLayer(drawnItems)) map.removeLayer(drawnItems);
+    };
+  }, [map]);
+
+  // 🔹 Controlar visibilidad desde prop
+  useEffect(() => {
+    console.log('mostrarPoligonos',mostrarPoligonos);
+    
+    const drawnItems = drawnItemsRef.current;
+    drawnItems.getLayers().forEach((layer: any) => {
+      const path = layer._path as SVGElement | undefined;
+      if (path) path.style.display = mostrarPoligonos ? "" : "none";
+      const tt = layer.getTooltip?.();
+      if (tt && tt._container) tt._container.style.display = mostrarPoligonos ? "" : "none";
+    });
+  }, [mostrarPoligonos]);
+
+  return null;
 };

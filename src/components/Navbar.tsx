@@ -6,7 +6,7 @@ const NavBar = () => {
   const links = [
     { to: "/", label: "📋 Tabla" },
     { to: "/mapa", label: "🗺️ Mapa" },
-    { to: "/grupos", label: "👥 Grupos" },
+    // { to: "/grupos", label: "👥 Grupos" },
   ];
 
   return (
@@ -24,7 +24,7 @@ const NavBar = () => {
                 key={link.to}
                 to={link.to}
                 className={`px-4 py-2 text-white text-lg font-medium transition-all duration-300 
-                  ${isActive ? "bg-[#000000] backdrop-blur-sm" : "hover:bg-white/10 hover:scale-105"}`}
+                  ${isActive ? "bg-[#4A6DA7] backdrop-blur-sm" : "hover:bg-white/10 hover:scale-105"}`}
               >
                 {link.label}
               </Link>
