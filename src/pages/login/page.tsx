@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import loaderCircle from "../../assets/icons/loader-circle.svg";
 import { login } from '../../services/auth/login'; // ajusta la ruta según tu estructura
 
 const Login = () => {
@@ -104,7 +104,7 @@ const Login = () => {
                   className="bg-[#4a6da7] text-[16px] hover:bg-[#345996] text-white py-[8px] w-full"
                 >
                   <span className='flex items-center justify-center'>
-                    {loading && <AiOutlineLoading3Quarters className='animate-spin mr-2' />}
+                    {loading &&   <img src={loaderCircle} className="animate-spin mr-2" />}
                     Iniciar sesión
                   </span>
                 </button>
