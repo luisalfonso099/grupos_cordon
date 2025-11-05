@@ -45,7 +45,9 @@ export const DrawControl = ({ mostrarPoligonos = true }: { mostrarPoligonos?: bo
         circle: false,
         marker: false,
         polyline: false,
+        circlemarker: false
       },
+      position : "bottomright",
     });
 
     map.addControl(drawControl);
@@ -173,7 +175,7 @@ export const DrawControl = ({ mostrarPoligonos = true }: { mostrarPoligonos?: bo
 
     const onCreated = async (e: L.LeafletEvent & { layer?: L.Layer }) => {
       try {
-        const layer = (e as any).layer as DibujableLayer | undefined;
+        const layer = (e).layer as DibujableLayer | undefined;
         if (!layer) return;
 
         const layers = drawnItems.getLayers() as DibujableLayer[];
@@ -331,14 +333,16 @@ export const DrawControl = ({ mostrarPoligonos = true }: { mostrarPoligonos?: bo
 
   // 🔹 Controlar visibilidad desde prop
   useEffect(() => {
-    console.log('mostrarPoligonos',mostrarPoligonos);
-    
     const drawnItems = drawnItemsRef.current;
-    drawnItems.getLayers().forEach((layer: any) => {
-      const path = layer._path as SVGElement | undefined;
+    drawnItems.getLayers().forEach((layer) => {
+      if (!(layer instanceof L.Polygon)) return;
+      const path = (layer as L.Polygon).getElement() as SVGElement | null;
       if (path) path.style.display = mostrarPoligonos ? "" : "none";
-      const tt = layer.getTooltip?.();
-      if (tt && tt._container) tt._container.style.display = mostrarPoligonos ? "" : "none";
+
+      const tooltip = layer.getTooltip();
+      if (tooltip && tooltip.getElement()) {
+        tooltip.getElement()!.style.display = mostrarPoligonos ? "" : "none";
+      }
     });
   }, [mostrarPoligonos]);
 

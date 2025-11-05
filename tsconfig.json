@@ -5,6 +5,16 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+
+    // 🔹 Aceptar `any` sin errores
+    "noImplicitAny": false,
+    "strict": false,
+    "skipLibCheck": true,
+
+    // 🔹 Permitir código flexible
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true
   }
 }

@@ -125,6 +125,7 @@ export default function MapaComponent() {
       />
 
       <MapContainer
+        zoomControl={false}
         center={[-34.9011, -56.1645]}
         zoom={14}
         style={{ height: "100vh", width: "100%" }}
