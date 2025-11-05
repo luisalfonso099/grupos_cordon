@@ -135,8 +135,7 @@ const DataTable = () => {
       },
       width: 100,
 
-      cellClick: async (e: UIEvent, cell: CellComponent) => {
-        console.log('CELDA,', cell);
+      cellClick: async (_: UIEvent, cell: CellComponent) => {
 
         const rowData = cell.getRow().getData();
 
