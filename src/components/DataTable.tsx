@@ -1,20 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import "tabulator-tables/dist/css/tabulator.min.css";
-// import { ReactTabulator } from "react-tabulator";
-// import { TabulatorFull as Tabulator, type CellComponent, type ColumnDefinition } from "tabulator-tables";
 
 import { ReactTabulator } from "react-tabulator";
 import { TabulatorFull as Tabulator, type CellComponent } from "tabulator-tables";
-// import dataJSON from '../data/personas.json'
 import { createPersona, deletePersona, fetchPersonas, updatePersona } from "../services/Firebase";
 import Swal from "sweetalert2";
 import type { IPersona, IPrivilegio } from "../types/dataTypes";
 
 const DataTable = () => {
 
-  // const [table, setTable] = useState<Tabulator | null>(null);
   const [tableRefObj, setTableRefObj] = useState<React.RefObject<Tabulator> | null>(null);
-  //  const tableRef = useRef<Tabulator | null>(null);
   const modifiedRowsRef = useRef<Set<string>>(new Set());
   const [data, setData] = useState<IPersona[]>([]);
   const PRIVILEGIOS_OPTIONS = [
@@ -130,8 +125,13 @@ const DataTable = () => {
     {
       title: "Acciones",
       field: "acciones",
+      cssClass: 'text-center',
+
       formatter: () => {
-        return "<button class=' cursor-pointer p-1 w-full bg-[#4A6DA7] hover:bg-[#5575a8] text-white'>Eliminar</button>";
+        return `<button class='text-center cursor-pointer p-1  bg-[#FDE8E8] hover:bg-[#FF0000] border-[#FF0000] border-2 rounded-md hover:text-amber-50 text-[#ff0000] transition-colors'>
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+         </button>`;
+
       },
       width: 100,
 
