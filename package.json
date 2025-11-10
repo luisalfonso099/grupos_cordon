@@ -22,7 +22,8 @@
     "react-tabulator": "^0.21.0",
     "sweetalert2": "^11.26.3",
     "tabulator-tables": "^6.3.1",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.1.16",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
