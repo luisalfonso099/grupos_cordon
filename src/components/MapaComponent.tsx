@@ -45,7 +45,7 @@ export default function MapaComponent() {
   const [personas, setPersonas] = useState<Persona[]>([]);
   const [filtrosPriv, setFiltrosPriv] = useState<string[]>([]);
   const [filtrosGrupos, setFiltrosGrupos] = useState<number[]>([]);
-  const [mostrarPersonas, setMostrarPersonas] = useState(false);
+  const [mostrarPersonas, setMostrarPersonas] = useState(true);
   const [mostrarTerritorios, setMostrarTerritorios] = useState(false);
   const [mostrarPoligonos, setMostrarPoligonos] = useState(true);
 

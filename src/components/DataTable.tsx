@@ -1,25 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import "tabulator-tables/dist/css/tabulator.min.css";
-
 import { ReactTabulator } from "react-tabulator";
 import { TabulatorFull as Tabulator, type CellComponent } from "tabulator-tables";
 import { createPersona, deletePersona, fetchPersonas, updatePersona } from "../services/Firebase";
 import Swal from "sweetalert2";
 import type { IPersona, IPrivilegio } from "../types/dataTypes";
+import * as XLSX from "xlsx";   // ✅ Importar XLSX
+(window as any).XLSX = XLSX;    // ✅ Registrar globalmente
 
 const DataTable = () => {
-
   const [tableRefObj, setTableRefObj] = useState<React.RefObject<Tabulator> | null>(null);
   const modifiedRowsRef = useRef<Set<string>>(new Set());
   const [data, setData] = useState<IPersona[]>([]);
-  const PRIVILEGIOS_OPTIONS = [
-    "Precursor Regular",
-    "Precursor Especial",
-    "Anciano",
-    "Ministerial",
-  ];
+  const [mostrarCoordenadas, setMostrarCoordenadas] = useState(false);
 
-
+  const PRIVILEGIOS_OPTIONS = ["Precursor Regular", "Precursor Especial", "Anciano", "Ministerial"];
   const PRIVILEGIOS_COLORS: Record<IPrivilegio, string> = {
     "Precursor Regular": "#4caf50",
     "Precursor Especial": "#2196f3",
@@ -35,7 +30,7 @@ const DataTable = () => {
     loadData();
   }, []);
 
-  const privilegiosFormatter = ( cell: CellComponent): string | undefined => {
+  const privilegiosFormatter = (cell: CellComponent): string | undefined => {
     const values = (cell.getValue() || "")
       .toString()
       .split(",")
@@ -46,33 +41,35 @@ const DataTable = () => {
       .map((val: IPrivilegio) => {
         const color = PRIVILEGIOS_COLORS[val] || "#999";
         return `<span style="
-        background:${color};
-        color:white;
-        padding:3px 8px;
-        border-radius:10px;
-        margin-right:4px;
-        display:inline-block;
-        font-size:12px;
-      ">${val}</span>`;
+          background:${color};
+          color:white;
+          padding:3px 8px;
+          border-radius:10px;
+          margin-right:4px;
+          display:inline-block;
+          font-size:12px;
+        ">${val}</span>`;
       })
       .join(" ");
   };
 
-
   const handleAddRow = () => {
     if (tableRefObj) {
-      tableRefObj.current.addRow({
-        grupo: "0",
-        privilegios: "",
-        condicion: "pendiente",
-        nombre: "",
-        direccion: ""
-      }, true) // false = agregar al final
+      tableRefObj.current
+        .addRow(
+          {
+            grupo: "0",
+            privilegios: "",
+            condicion: "pendiente",
+            nombre: "",
+            direccion: "",
+          },
+          true
+        )
         .then(() => console.log("Fila agregada"))
         .catch((err: string) => console.error("Error al agregar fila:", err));
     }
   };
-
 
   const columns: any[] = [
     {
@@ -82,11 +79,10 @@ const DataTable = () => {
       validator: ["required", "integer"],
       editorParams: { min: 0, step: 1 },
       width: 100,
-      cssClass: 'text-center',
+      cssClass: "text-center",
       headerFilter: "input",
       headerFilterPlaceholder: "Filtrar Grupos...",
       headerFilterFunc: "like",
-
     },
     {
       title: "Nombre",
@@ -106,8 +102,7 @@ const DataTable = () => {
         multiselect: true,
         clearable: true,
       },
-      mutatorEdit: (value: string) => Array.isArray(value) ? value.join(", ") : value,
-
+      mutatorEdit: (value: string) => (Array.isArray(value) ? value.join(", ") : value),
       headerFilter: "select",
       headerFilterPlaceholder: "Filtrar Privilegios...",
       headerFilterParams: {
@@ -115,30 +110,21 @@ const DataTable = () => {
       },
     },
     { title: "Dirección", field: "direccion", editor: "input" },
-    {
-      title: "Condición",
-      field: "condicion",
-      editor: "input",
-    },
-    { title: "Lat", field: "lat", editor: "input" },
-    { title: "Lon", field: "lon", editor: "input" },
+    { title: "Condición", field: "condicion", editor: "input" },
+    { title: "Lat", field: "lat", editor: "input", visible: mostrarCoordenadas }, // 👈 controlado
+    { title: "Lon", field: "lon", editor: "input", visible: mostrarCoordenadas }, // 👈 controlado
     {
       title: "Acciones",
       field: "acciones",
-      cssClass: 'text-center',
-
+      cssClass: "text-center",
       formatter: () => {
         return `<button class='text-center cursor-pointer p-1  bg-[#FDE8E8] hover:bg-[#FF0000] border-[#FF0000] border-2 rounded-md hover:text-amber-50 text-[#ff0000] transition-colors'>
-             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
          </button>`;
-
       },
       width: 100,
-
       cellClick: async (_: UIEvent, cell: CellComponent) => {
-
         const rowData = cell.getRow().getData();
-
         const result = await Swal.fire({
           title: `¿Eliminar a ${rowData.nombre}?`,
           text: "Esta acción no se puede deshacer.",
@@ -148,14 +134,12 @@ const DataTable = () => {
           cancelButtonColor: "#6c757d",
           confirmButtonText: "Sí, eliminar",
           cancelButtonText: "Cancelar",
-          background: "#fff",
         });
 
         if (result.isConfirmed) {
           try {
             await deletePersona(rowData.id);
-            cell.getRow().delete(); // Elimina visualmente la fila
-
+            cell.getRow().delete();
             Swal.fire({
               title: "Eliminado",
               text: `${rowData.nombre} fue eliminado correctamente.`,
@@ -173,10 +157,29 @@ const DataTable = () => {
             });
           }
         }
-      }
-
-    }
+      },
+    },
   ];
+
+  // 🔹 Alternar visibilidad de columnas Lat/Lon y reajustar el ancho
+  const toggleCoordenadas = () => {
+    if (tableRefObj?.current) {
+      const table = tableRefObj.current;
+      const cols = ["lat", "lon"];
+      cols.forEach((col) => {
+        const column = table.getColumn(col);
+        if (column) {
+          if (mostrarCoordenadas) column.hide();
+          else column.show();
+        }
+      });
+
+      // 👇 Redibujar para que ajuste los anchos de las columnas visibles
+      table.redraw(true);
+    }
+
+    setMostrarCoordenadas((prev) => !prev);
+  };
 
   const handleSaveChanges = async () => {
     if (!tableRefObj) {
@@ -187,13 +190,10 @@ const DataTable = () => {
       });
     }
 
-    const allRows = tableRefObj.current.getData() as IPersona[];;
+    const allRows = tableRefObj.current.getData() as IPersona[];
     const ids = Array.from(modifiedRowsRef.current);
 
-    // Detectamos filas nuevas (sin ID)
     const newRows = allRows.filter((r) => !r.id);
-
-    // Filas modificadas existentes
     const rowsToUpdate = allRows.filter((r) => r.id && ids.includes(String(r.id)));
 
     if (rowsToUpdate.length === 0 && newRows.length === 0) {
@@ -205,8 +205,8 @@ const DataTable = () => {
     }
 
     Swal.fire({
-      title: 'Guardando cambios...',
-      text: 'Por favor, espera un momento',
+      title: "Guardando cambios...",
+      text: "Por favor, espera un momento",
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -215,33 +215,29 @@ const DataTable = () => {
 
     let count = 0;
 
-    // 🔹 Guardar nuevas filas en Firebase
+    // Guardar nuevas filas
     for (const row of newRows) {
       try {
         const newId = await createPersona({
-          nombre: row.nombre || '',
-          direccion: row.direccion || '',
+          nombre: row.nombre || "",
+          direccion: row.direccion || "",
           grupo: Number(row.grupo) || 1,
-          condicion: row.condicion || '',
-          privilegios: row.privilegios?.toString().split(",").map((v: string) => v.trim()) ?? [],
-          lat: row.lat || '',
-          lon: row.lon || ''
+          condicion: row.condicion || "",
+          privilegios:
+            row.privilegios?.toString().split(",").map((v: string) => v.trim()) ?? [],
+          lat: row.lat || "",
+          lon: row.lon || "",
         });
 
-        // Actualizar la fila en la tabla con el nuevo ID
-        // const tabRow = tableRefObj.current.getRow(row);
-        const tabRow = tableRefObj.current.getRows().find(r => r.getData() === row);
-        if (tabRow) {
-          tabRow.update({ id: newId });
-        }
-
+        const tabRow = tableRefObj.current.getRows().find((r) => r.getData() === row);
+        if (tabRow) tabRow.update({ id: newId });
         count++;
       } catch (err) {
         console.error("Error creando persona:", err);
       }
     }
 
-    // 🔹 Actualizar filas existentes
+    // Actualizar filas existentes
     for (const row of rowsToUpdate) {
       try {
         await updatePersona({
@@ -250,9 +246,10 @@ const DataTable = () => {
           direccion: row.direccion,
           grupo: Number(row.grupo),
           condicion: row.condicion,
-          privilegios: row.privilegios?.toString().split(",").map((v: string) => v.trim()) ?? [],
+          privilegios:
+            row.privilegios?.toString().split(",").map((v: string) => v.trim()) ?? [],
           lat: row.lat,
-          lon: row.lon
+          lon: row.lon,
         });
         count++;
       } catch (err) {
@@ -271,14 +268,10 @@ const DataTable = () => {
     });
   };
 
-
-  // Eventos pasados a ReactTabulator
   const events = {
-    // cellEdited recibe el objeto CellComponent de Tabulator
     cellEdited: (cell: CellComponent) => {
       try {
         const rowData = cell.getRow().getData();
-        // Si no hay id (fila nueva), podrías decidir crearla o saltarla
         if (rowData?.id) {
           modifiedRowsRef.current.add(String(rowData.id));
         }
@@ -286,50 +279,65 @@ const DataTable = () => {
         console.warn("Error en cellEdited:", err);
       }
     },
-
-
   };
 
-  // const handleSaveAll = async () => {
-  //   if (!table) return;
-
-  //   // Obtener datos actuales de la tabla
-  //   // const rows = table.getData();
-
-  //   // Convertir a tu tipo Persona
-  //   const personas = dataJSON.map((r) => ({
-  //     // id: crypto.randomUUID(),
-  //     nombre: r.nombre,
-  //     direccion: r.direccion,
-  //     grupo: Number(r.grupo),
-  //     condicion: r.condicion,
-  //     lat: r.lat,
-  //     lon: r.lon,
-  //     privilegios: r.privilegios?.split(",").map((v: string) => v.trim()),
-  //   }));
-
-  //   await saveAllPersonas(personas);
-
-  //   alert("✅ La tabla completa fue guardada en Firestore");
-  // };
-
+  const handleExportExcel = () => {
+    if (tableRefObj?.current) {
+      tableRefObj.current.download("xlsx", "personas.xlsx", {
+        sheetName: "Personas",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Tabla no disponible",
+        text: "No se pudo exportar los datos. Intenta recargar la página.",
+      });
+    }
+  };
 
   return (
     <div className="p-2">
-      <button onClick={handleSaveChanges} className="bg-[#4A6DA7] text-white p-2 cursor-pointer font-medium">
-        Guardar tabla
-      </button>
-      <button onClick={handleAddRow} className="bg-[#4A6DA7] text-white p-2 cursor-pointer font-medium ml-2 mt-2">Agregar fila</button>
+      <div className="flex flex-wrap gap-2 mt-2">
+        <button
+          onClick={handleSaveChanges}
+          className="bg-[#4A6DA7] text-white p-2 cursor-pointer font-medium"
+        >
+          Guardar tabla
+        </button>
+        <button
+          onClick={handleAddRow}
+          className="bg-[#4A6DA7] text-white p-2 cursor-pointer font-medium"
+        >
+          Agregar fila
+        </button>
+        <button
+          onClick={toggleCoordenadas}
+          className="bg-gray-600 text-white p-2 cursor-pointer font-medium"
+        >
+          {mostrarCoordenadas ? "Ocultar Lat/Lon" : "Mostrar Lat/Lon"}
+        </button>
+        <button
+          onClick={handleExportExcel}
+          className="bg-green-600 text-white p-2 cursor-pointer font-medium"
+        >
+          Exportar Excel
+        </button>
+      </div>
 
-      <ReactTabulator
-        events={events}
-        data={data}
-        columns={columns}
-        layout="fitColumns"
-        onRef={(ref) => setTableRefObj(ref)}
-      />
+      {/* 👇 Envolvemos la tabla en un contenedor desplazable */}
+      <div className="overflow-x-auto border border-gray-300 rounded-md shadow-sm mt-2">
+        <ReactTabulator
+          events={events}
+          data={data}
+          columns={columns}
+          layout="fitColumns"
+          onRef={(ref) => setTableRefObj(ref)}
+          className="min-w-[700px]" // 👈 evita que las columnas se aplasten demasiado
+        />
+      </div>
     </div>
   );
+
 };
 
 export default DataTable;
