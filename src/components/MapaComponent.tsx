@@ -128,7 +128,7 @@ export default function MapaComponent() {
         zoomControl={false}
         center={[-34.9011, -56.1645]}
         zoom={14}
-        style={{ height: "100vh", width: "100%" }}
+        style={{ height: "100dvh", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
